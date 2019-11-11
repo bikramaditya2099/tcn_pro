@@ -1,7 +1,10 @@
 package com.codersnation.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import com.codersnation.bean.User;
+import com.codersnation.controller.exception.CodersNationException;
 
 public interface UserService {
-	UserDetails getUserByUserName(String userName);
+	Object registerUser(User user)throws CodersNationException;
+	Object authenticate(String userName,String password) throws CodersNationException;
+	Object getUserByUserEmail(String userName);
 }
