@@ -13,6 +13,36 @@ public class User {
 	private Date createdAt;
 	private String profilePic;
 	private String resume;
+	private String emailOtp;
+	private String emailExpiry;
+	private int emailOtpValidated;
+	
+	
+	
+
+	public int getEmailOtpValidated() {
+		return emailOtpValidated;
+	}
+
+	public void setEmailOtpValidated(int emailOtpValidated) {
+		this.emailOtpValidated = emailOtpValidated;
+	}
+
+	public String getEmailOtp() {
+		return emailOtp;
+	}
+
+	public void setEmailOtp(String emailOtp) {
+		this.emailOtp = emailOtp;
+	}
+
+	public String getEmailExpiry() {
+		return emailExpiry;
+	}
+
+	public void setEmailExpiry(String emailExpiry) {
+		this.emailExpiry = emailExpiry;
+	}
 
 	public long getId() {
 		return id;

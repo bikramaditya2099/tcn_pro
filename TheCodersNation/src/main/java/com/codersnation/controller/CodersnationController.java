@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +54,25 @@ public class CodersnationController {
 		return userService.getUserByUserEmail(userName);
 	}
 	
+	@RequestMapping(value = "/validateOTP/{email}/{otp}", method = RequestMethod.GET)
+	public Object validateOTP(HttpServletRequest request,@PathVariable("email") String email,@PathVariable("otp") String otp) {	
+		try {
+			Object ob= userService.otpValidate(email,otp);
+			return ob;
+		} catch (CodersNationException e) {
+			return new FailResponse(e);
+		}
+	}
+	
+	@RequestMapping(value = "/resendOtp/{email}", method = RequestMethod.GET)
+	public Object resendOtp(HttpServletRequest request,@PathVariable("email") String email) {	
+		try {
+			Object ob= userService.resendOtp(email);
+			return ob;
+		} catch (CodersNationException e) {
+			return new FailResponse(e);
+		}
+	}
 	
 	@RequestMapping(value = "/signout", method = RequestMethod.GET)
 	public Object logout(HttpServletRequest request) {	

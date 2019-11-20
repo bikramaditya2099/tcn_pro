@@ -9,4 +9,7 @@ public interface UserDao {
 	Object registerUser(User user) throws CodersNationException;
 	
 	Object authenticate(String userName,String password) throws CodersNationException;
+	User validateOTP(String email)throws CodersNationException;
+	Object updateOTP(String email)throws CodersNationException;
+	Object resendOTP(String email,String otp,String expiryTime) throws CodersNationException;
 }
