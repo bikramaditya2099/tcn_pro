@@ -49,3 +49,13 @@ CREATE TABLE user_education (
   PRIMARY KEY (id),
   FOREIGN KEY (email) REFERENCES user (email)
 )
+
+
+ALTER TABLE user
+ADD COLUMN email_otp VARCHAR(50) ,
+ADD COLUMN   email_otp_expiry_time VARCHAR(50)  ,
+ADD COLUMN  sms_otp VARCHAR(50)  ,
+ADD COLUMN   sms_otp_expiry_time VARCHAR(50) ,
+ADD COLUMN email_otp_validated INT(1) DEFAULT 0,
+ADD COLUMN   sms_otp_validated INT(1)  DEFAULT 0
+      ;
