@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codersnation.bean.AdminLoginBean;
+import com.codersnation.bean.SMSBean;
 import com.codersnation.controller.exception.CodersNationException;
 import com.codersnation.service.AdminService;
 import com.codersnation.service.UserService;
@@ -35,6 +36,17 @@ public class AdminController {
 	public Object getAdminUserInfo(@RequestHeader("token") String token) {
 		try {
 			return adminService.getAdminUser(token);
+		}
+		catch(CodersNationException e) {
+			return new FailResponse(e);
+		}
+	}
+	
+	@RequestMapping(value = "/sendsms", method = RequestMethod.POST)
+	public Object sendSMS(@RequestHeader("token") String token,@RequestBody SMSBean bean) {
+		try {
+			
+			return adminService.sendsms(bean,token);
 		}
 		catch(CodersNationException e) {
 			return new FailResponse(e);
