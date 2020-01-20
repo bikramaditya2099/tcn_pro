@@ -36,7 +36,7 @@ String smsToken;
 		RestTemplate restTemplate=new RestTemplate();
 		String numList="";
 		for(String num:smsBean.getNumbers()) {
-			numList=numList+num+",";
+			numList=numList+num.trim()+",";
 		}
 		numList=numList.substring(0, (numList.length())-1);
 		
