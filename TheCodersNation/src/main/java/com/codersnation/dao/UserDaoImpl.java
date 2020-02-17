@@ -7,11 +7,15 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.codersnation.bean.EventRegistrationBean;
 import com.codersnation.bean.User;
+import com.codersnation.bean.UserProfile;
+import com.codersnation.bean.UserWithUserProfile;
 import com.codersnation.controller.exception.CodersNationException;
 import com.codersnation.controller.exception.ExceptionEnum;
 import com.codersnation.rowmapper.LoginRowMapper;
 import com.codersnation.rowmapper.OTPRowMapper;
+import com.codersnation.rowmapper.UserProfileRowMapper;
 import com.codersnation.rowmapper.UserRowMapper;
 import com.codersnation.util.SuccessResponse;
 @Repository
@@ -126,6 +130,63 @@ public class UserDaoImpl implements UserDao {
 		catch(Exception e) {
 			throw new CodersNationException(ExceptionEnum.DAO_ERROR);
 		}
+	}
+
+	@Override
+	public UserProfile getUserProfileByEmail(String email) throws CodersNationException {
+		String sql=Query.GET_USER_PROFILE;
+		Object args[]= {email};
+		UserProfile userProfile=null;
+		try {
+			userProfile = jdbcTemplate.queryForObject(sql,args ,new UserProfileRowMapper());
+			
+			}
+			catch(Exception e) {
+				throw new CodersNationException(ExceptionEnum.DAO_ERROR);
+			}
+		return userProfile;
+	}
+
+	@Override
+	public Object updateUserProfile(UserWithUserProfile userWithUserProfile) throws CodersNationException {
+		User user=userWithUserProfile.getUser();
+		UserProfile profile=userWithUserProfile.getUserProfile();
+		String insertSql=Query.INSERT_USER_PROFILE;
+		String updateSql=Query.UPDATE_USER_PROFILE; 
+		boolean updateFail=false;
+		profile.setEmailId(user.getEmail());
+		try {
+			Object args[]= {profile.getEmailId(),profile.gethDegree(),profile.getPassoutYear(),profile.getPostalCode(),profile.getCollegeName(),profile.getAboutMe(),profile.getAddress(),profile.getEmailId()};
+		getUserProfileByEmail(user.getEmail());
+		updateFail=true;
+		jdbcTemplate.update(updateSql,args);
+		}
+		catch(Exception e) {
+			if(updateFail==false) {
+			Object args[]= {profile.getEmailId(),profile.gethDegree(),profile.getPassoutYear(),profile.getPostalCode(),profile.getCollegeName(),profile.getAboutMe(),profile.getAddress()};
+			 jdbcTemplate.update(insertSql,args);
+			}
+			if(updateFail==true) {
+				throw new CodersNationException(ExceptionEnum.DAO_ERROR);
+			}
+		}
+		return  new SuccessResponse(ExceptionEnum.USER_PROFILE_UPDATED,"user profile updated successfully");
+	}
+
+	@Override
+	public Object registerForEvent(EventRegistrationBean bean) throws CodersNationException {
+		String insertSql=Query.INSERT_EVENT;
+		Object args[]= {bean.getType(),bean.getName(),bean.getEmail(),bean.getPhone(),bean.getOrganisation(),bean.getDesignation(),bean.getCollege(),bean.getStream(),bean.getPercentage()};
+		
+		try {
+			
+		jdbcTemplate.update(insertSql,args);
+		}
+		catch(Exception e) {
+			
+				throw new CodersNationException(ExceptionEnum.DAO_ERROR);
+			}
+		return  new SuccessResponse(ExceptionEnum.USER_REGISTER_SUCCESS,"user regostered");	
 	}
 
 }

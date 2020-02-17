@@ -12,6 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
+import com.codersnation.bean.EventRegistrationBean;
+import com.codersnation.bean.UserProfile;
+import com.codersnation.bean.UserWithUserProfile;
 import com.codersnation.controller.exception.CodersNationException;
 import com.codersnation.controller.exception.ExceptionEnum;
 import com.codersnation.dao.UserDao;
@@ -83,6 +86,32 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 		EmailUtil.sendEmail(email, "Welcome to thecodersnation ", EmailUtil.createRegistrationTemplate(name, otp));
 		
 		return ob;
+	}
+
+	@Override
+	public Object getUserProfile(String userName)  {
+		com.codersnation.bean.User user= dao.getUserByEmail(userName);
+		UserProfile userProfile = null;
+		try {
+			userProfile = dao.getUserProfileByEmail(userName);
+		} catch (CodersNationException e) {
+			e.printStackTrace();
+		}
+		UserWithUserProfile withUserProfile=new UserWithUserProfile();
+		withUserProfile.setUser(user);
+		withUserProfile.setUserProfile(userProfile);
+		return withUserProfile;
+	}
+
+	@Override
+	public Object updateProfile(UserWithUserProfile userWithUserProfile) throws CodersNationException {
+		return dao.updateUserProfile(userWithUserProfile);
+	}
+
+	@Override
+	public Object registerevent(EventRegistrationBean bean) throws CodersNationException {
+		
+		return dao.registerForEvent(bean);
 	}
 	
 	

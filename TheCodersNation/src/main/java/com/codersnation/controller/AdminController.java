@@ -122,4 +122,14 @@ public class AdminController {
 	        System.out.println(numbers);
 	       return new SuccessResponse(ExceptionEnum.NUMBERS_GENERATED, numbers);
 	    }
+	
+	@RequestMapping(value = "/getregisteredusers", method = RequestMethod.GET)
+	public Object getregisteredusers(@RequestHeader("token") String token) {
+		try {
+			return adminService.getEventuserList(token);
+		}
+		catch(CodersNationException e) {
+			return new FailResponse(e);
+		}
+	}
 }

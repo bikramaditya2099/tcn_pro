@@ -1,5 +1,6 @@
 package com.codersnation.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,12 @@ import org.springframework.stereotype.Repository;
 
 import com.codersnation.bean.AdminLoginBean;
 import com.codersnation.bean.AdminUser;
+import com.codersnation.bean.EventRegistrationBean;
 import com.codersnation.bean.User;
 import com.codersnation.controller.exception.CodersNationException;
 import com.codersnation.controller.exception.ExceptionEnum;
 import com.codersnation.rowmapper.AdminUserRowMapper;
+import com.codersnation.rowmapper.EventUserRowMapper;
 import com.codersnation.rowmapper.UserRowMapper;
 import com.codersnation.util.AdminTokenUtil;
 import com.codersnation.util.FailResponse;
@@ -59,5 +62,21 @@ public class AdminDaoImpl implements AdminDao {
 		}
 		return user;
 	}
+	@Override
+	public List<EventRegistrationBean> getregisteredusers(String token) throws CodersNationException {
+		String sql=Query.GET_ALL_EVENT_USERS;
+		getAdminUserInfo(token);
+		
+		List<EventRegistrationBean> user=null;
+		try {
+		 user=	jdbcTemplate.query(sql, new EventUserRowMapper());
+		}catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			throw new CodersNationException(ExceptionEnum.USER_NOT_EXIST);
+		}
+		return user;
+	}
+	
+	
 
 }

@@ -9,4 +9,9 @@ public interface Query {
 	String VALIDATE_ADMIN_LOGIN="select count(*) as count from admin_user where email=? and password=?";
 	String UPDATE_ADMIN_TOKEN="update admin_user set admin_token=? where email=?";
 	String GET_ADMIN_USER="select ad.*,rd.name role from admin_user ad inner join role rd on rd.id=ad.role_id where admin_token=?";
+	String GET_USER_PROFILE="select emailid,degree,passoutyear,postalcode,collegename,aboutme,address from profile_tbl where emailid=?";
+	String INSERT_USER_PROFILE="insert into profile_tbl(emailid,degree,passoutyear,postalcode,collegename,aboutme,address) values(?,?,?,?,?,?,?)";
+	String UPDATE_USER_PROFILE="update profile_tbl set emailid=?,degree=?,passoutyear=?,postalcode=?,collegename=?,aboutme=?,address=? where emailid=?";	
+	String INSERT_EVENT="insert into event_reg(type,name,email,phone,organisation,designation,college,stream,percentage) values(?,?,?,?,?,?,?,?,?)";
+	String GET_ALL_EVENT_USERS="select * from event_reg";
 }

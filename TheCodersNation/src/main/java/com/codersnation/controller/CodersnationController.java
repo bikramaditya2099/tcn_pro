@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codersnation.bean.EventRegistrationBean;
 import com.codersnation.bean.User;
+import com.codersnation.bean.UserWithUserProfile;
 import com.codersnation.controller.exception.CodersNationException;
 import com.codersnation.service.UserService;
 import com.codersnation.util.FailResponse;
@@ -46,7 +48,7 @@ public class CodersnationController {
 		return s;
 	}
 	
-	@RequestMapping(value = "/getUserDetails", method = RequestMethod.GET)
+	@RequestMapping(value = "/getuserdetails", method = RequestMethod.GET)
 	public Object getUserDetails(HttpServletRequest request, @RequestHeader("token") String token) {	
 		final String requestTokenHeader = token;
 		String jwtToken = requestTokenHeader.substring(7);
@@ -80,5 +82,37 @@ public class CodersnationController {
 		String jwtToken = requestTokenHeader.substring(7);
 		
 		return "Logout Successfull";
+	}
+	
+	@RequestMapping(value = "/getuserprofile", method = RequestMethod.GET)
+	public Object getUserProfile(HttpServletRequest request, @RequestHeader("token") String token) {
+		try {
+		final String requestTokenHeader = token;
+		String jwtToken = requestTokenHeader.substring(7);
+		String userName=jwtTokenUtil.getUsernameFromToken(jwtToken);
+		return userService.getUserProfile(userName);
+		} catch (CodersNationException e) {
+			return new FailResponse(e);
+		}
+	}
+	
+	@RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
+	public Object updateProfile(@RequestBody UserWithUserProfile profile) {
+	try {
+		Object ob=userService.updateProfile(profile);
+		return ob;
+	} catch (CodersNationException e) {
+		return new FailResponse(e);
+	}
+	}
+	
+	@RequestMapping(value = "/registerEvent", method = RequestMethod.POST)
+	public Object registerEvent(@RequestBody EventRegistrationBean bean) {
+	try {
+		Object ob=userService.registerevent(bean);
+		return ob; 
+	} catch (CodersNationException e) {
+		return new FailResponse(e);
+	}
 	}
 }

@@ -9,4 +9,5 @@ public interface AdminService {
 Object validateAdminLogin(AdminLoginBean adminLoginBean) throws CodersNationException;
 AdminUser getAdminUser(String token) throws CodersNationException;
 Object sendsms(SMSBean bean,String token) throws CodersNationException;
+Object getEventuserList(String token) throws CodersNationException;
 }

@@ -48,6 +48,11 @@ String smsToken;
 			throw new CodersNationException(ExceptionEnum.DAO_ERROR);
 		}
 		return response;
+	}
+	@Override
+	public Object getEventuserList(String token) throws CodersNationException {
+		
+		return adminDao.getregisteredusers(token);
 	} 
 
 }
